@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bugbusters AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <!-- Firebase Database -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+    <nav class="navbar  fixed-top">
+        <!-- Navbar -->
+        <div class="container-fluid">
+          <!-- LOGO -->
+    
+          <!-- btn -->
+          <button class="navbar-toggler shadow-none border-0 text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <i class="fa-solid fa-bars fa-custom-size"></i>
+          </button>
+    
+          <!-- LOGO -->
+          <div class="image-container">
+            <a href="#"><img src="image/logo.jpg" alt="LOGO"></a>
+          </div>
+          <!-- Sidebar -->
+
+          <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">BugBuster Ai</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#" onclick="newContent()" data-bs-dismiss="offcanvas">หน้าหลัก</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" onclick="BookingData()"data-bs-dismiss="offcanvas">ข้อมูลการนัดหมาย</a>
+                </li>
+            </div>
+          </div>
+    
+          <div class="profile" id="profile_line">
+            <img id="lineImage">
+          </div>
+        </div>
+    </nav>
+
+    <div class="display_show" >
+      <p class="text_display_show">หน้าหลัก</p>
+    </div>
+
+    <div class="container" >
+      <div class="content" style="display: none;">
+        <div class="card" >
+            <div class="text-card">
+              <img src="image/logowhite.jpg" id="imglogowhite">
+              <h4 style="font-weight: bold;">โปรดยืนยันการจอง</h4>
+              <p style="font-weight: normal;">ข้อมูลของคุณถูกบันทึกแล้ว</p>
+              <button class="confirm-button" onclick="BookingData()">ข้อมูลการนัดหมาย</button>
+            </div>
+        </div>  
+    </div>
+    
+
+      <div id="lineProfile" style="display: none;">
+        <div id="lineUID" style="display: none;">UID: Your ID</div>
+        <p class="text_container">นัดสำรวจ</p>
+        <input id="dateselect"  type="date" placeholder="วัน/เดือน/ปี " class="information">
+        <p class="text_container">ช่องทางติดต่อ</p>
+        <input type="text" id="userName" name="userName" placeholder="ชื่อ" class="information">
+        <input type="text" id="userLast" name="userLast" placeholder="นามสกุล" class="information">
+        <input type="number" id="userTel" name="userTel" placeholder="หมายเลขโทรศัพท์" class="information">
+        <p class="text_container">ที่อยู่</p>
+        <input type="text" id="userAddress" name="userAddress" placeholder="บ้านเลขที่,หมู่บ้าน,ซอย" class="information">
+        <div class="dropdown-container">
+            <select id="province" onchange="updateAmphures()">
+              <option value="">จังหวัด</option>
+            </select>
+            </div>
+          <div class="dropdown-container">
+            <select id="amphure" onchange="updateTambons()">
+              <option value="">อำเภอ</option>
+            </select>
+          </div>
+
+          <div class="dropdown-container">
+            <select id="tambon">
+              <option value="">ตำบล</option>
+            </select>
+          </div>
+          <pre id="selected"></pre>
+
+          <div class="btn">
+            <button id="logout" onclick="logout()">Logout</button>
+            <button id="accept" onclick="showData()">บันทึกข้อมูล</button>
+          </div>
+
+        </div>
+        <div class="showdataUser">
+          <p id="userDataDisplay"></p>
+        </div>
+        
+        
+      </div>
+
+    
+
+
+    </div>
+  
+
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/versions/2.22.3/sdk.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyCxTCUmIzvkC8cTW_TETeZBOTZZ7aPqnhw",
+        authDomain: "geminibugbuster.firebaseapp.com",
+        databaseURL: "https://geminibugbuster-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "geminibugbuster",
+        storageBucket: "geminibugbuster.appspot.com",
+        messagingSenderId: "576048046575",
+        appId: "1:576048046575:web:dadf68947e6a0486ec561a",
+        measurementId: "G-NDN0MM76KS"
+      };
+      
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      let profile;
+      let uid;
+      
+
+      const main = async () => {
+        await liff.init({ liffId: "2004363658-maB2r11R" });
+        if (!liff.isLoggedIn()) {
+          liff.login();
+          return false;
+        }
+        profile = await liff.getProfile();
+        uid = profile.userId;
+
+        // ตรวจสอบว่าผู้ใช้มีข้อมูลอยู่แล้วหรือไม่
+        const userRef = firebase.database().ref("Users/" + uid);
+        userRef.once('value').then((snapshot) => {
+          if (snapshot.exists()) {
+            // ถ้ามีข้อมูลอยู่แล้ว ให้แสดงข้อมูลที่มีอยู่
+            const userData = snapshot.val(); // ข้อมูลทั้งหมดของผู้ใช้
+            const userName = userData.name;
+            const userLast = userData.lastname;
+            const userAddress = userData.address;
+            const userTel = userData.tel;
+            const userDateSelect = userData.dateselect;
+
+            lineImage.src = profile.pictureUrl;
+            lineUID.textContent = `UID : ${profile.userId}`
+            newContent();
+
+          } else { 
+            lineImage.src = profile.pictureUrl;
+            lineUID.textContent = `UID : ${profile.userId}`;
+            lineProfile.style.display = 'block';
+          }
+        });
+      };
+
+      const logout = async () => {
+        liff.logout();
+        main();
+      };
+
+      const toggleUID = () => {
+        const uidElement = document.getElementById("lineUID");
+        uidElement.style.display = uidElement.style.display === 'none' ? 'block' : 'none';
+      };
+
+      main();
+
+      function newContent() {
+        document.querySelector('.text_display_show').textContent = 'หน้าหลัก';
+        const userRef = firebase.database().ref("Users/" + uid);  
+        userRef.once('value').then((snapshot) => {
+            if (snapshot.exists()) {
+                // ถ้ามีข้อมูลอยู่แล้ว ให้แสดงข้อมูลที่มีอยู่
+                document.querySelector('.content').style.display = 'block';  
+                document.querySelector('.showdataUser').style.display = 'none'; 
+            } else {
+                // ถ้าไม่มีข้อมูลใน Firebase
+                document.querySelector('.showdataUser').style.display = 'none'; 
+                // แสดง Alert
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'ไม่พบข้อมูล',
+                    text: 'กรุณากรอกข้อมูลก่อน'
+                });
+            }
+        });
+    }
+
+
+
+    function BookingData() {
+      document.querySelector('.text_display_show').textContent = 'ข้อมูลการนัดหมาย';  
+      document.querySelector('.showdataUser').style.display = 'block'; 
+      document.querySelector('.content').style.display = 'none'; 
+      const userRef = firebase.database().ref("Users/" + uid);  
+      userRef.once('value').then((snapshot) => {
+          if (snapshot.exists()) {
+              // ถ้ามีข้อมูลอยู่แล้ว ให้แสดงข้อมูลที่มีอยู่
+              const userData = snapshot.val(); // ข้อมูลทั้งหมดของผู้ใช้
+              const userName = userData.name;
+              const userLast = userData.lastname;
+              const userAddress = userData.address;
+              const userTel = userData.tel;
+              const userDateSelect = userData.dateselect;
+              const userProvince = userData.province;
+              const userAmphure = userData.amphure;
+              const userTambon = userData.tambon; 
+              const status = userData.status; // เพิ่มค่า status
+
+              lineImage.src = profile.pictureUrl;
+              lineUID.textContent = `UID : ${profile.userId}`;
+
+              // ตั้งค่าสีของข้อมูลขึ้นอยู่กับค่า status
+              let statusColorClass = '';
+              if (status === 'confirmed') {
+                  statusColorClass = 'text-success'; // สีเขียวเมื่อยืนยันแล้ว
+              } else {
+                  statusColorClass = 'text-danger'; // สีแดงเมื่อยังไม่ได้ยืนยัน
+              }
+
+              // แสดงข้อมูลที่มีอยู่ใน class showdataUser รวมกับค่า status
+              document.querySelector('.showdataUser').innerHTML = `
+              <div class="booking-container"><br>
+                <p class= "bookingdata-text" >นัดหมายสำรวจ<p>
+                <div class= "bookingdata">วันที่เลือก: ${userDateSelect}<br></div>
+                <div class= "bookingdata" >ชื่อ: ${userName}<br></div>
+                <div class= "bookingdata">นามสกุล: ${userLast}<br></div>
+                <div class= "bookingdata">เบอร์โทร: ${userTel}<br></div>
+                <div class= "bookingdata">ที่อยู่ : <br>${userAddress}</div>
+                <div class= "bookingdata">จังหวัด: ${userProvince}<br></div>
+                <div class= "bookingdata">อำเภอ: ${userAmphure}<br></div>
+                <div class= "bookingdata">ตำบล: ${userTambon}<br></div>
+                <div class= "bookingdata">สถานะ: <span class="${statusColorClass}">${status}</span><br></div>
+
+                <button id="update" onclick="editData('${userName}', '${userLast}', '${userAddress}', '${userTel}', '${userDateSelect}','${userProvince}','${userAmphure}','${userTambon}')">แก้ไขข้อมูล</button><br>
+                <button id="delete" onclick="deleteUser('${profile.userId}')">ยกเลิกการจอง</button>
+                <button id="confirm" onclick="confirmBooking('${profile.userId}')">ยืนยันการจอง</button>
+              </div>
+                
+              `;
+          } else { 
+              lineImage.src = profile.pictureUrl;
+              lineUID.textContent = `UID : ${profile.userId}`;
+              lineProfile.style.display = 'block';
+
+              // แสดง Alert หากไม่พบข้อมูลใน Firebase
+              Swal.fire({
+                  icon: 'warning',
+                  title: 'ไม่พบข้อมูล',
+                  text: 'กรุณากรอกข้อมูลก่อน'
+              });
+          }
+      });
+    }
+
+
+
+
+
+
+      
+      function confirmBooking(userId) {
+      Swal.fire({
+          title: "ยืนยันการจองหรือไม่?",
+          text: "กรุณาตรวจสอบข้อมูลให้ถูกต้อง",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#1BBF18",
+          cancelButtonColor: "ยกเลิก",
+          confirmButtonText: "ยืนยันการจอง",
+          reverseButtons: true,
+          customClass: {
+            confirmButton: 'btn-accept-reservation'
+          }
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  const userRef = firebase.database().ref("Users/" + userId);
+                  userRef.update({ status: "confirmed" })
+                      .then(() => {
+                          Swal.fire({
+                              icon: 'success',
+                              title: 'ยืนยันการจองแล้ว',
+                              timer: 1500
+                          }).then(() => {
+                              console.log("test success")
+                              const userRef = firebase.database().ref("Users/" + userId);
+                              userRef.once('value').then((snapshot) => {
+                                  if (snapshot.exists()) {
+                                      // ถ้ามีข้อมูลอยู่แล้ว ให้แสดงข้อมูลที่มีอยู่
+                                      const userData = snapshot.val();
+                                      const userName = userData.name;
+                                      const userLast = userData.lastname;
+                                      const userAddress = userData.address;
+                                      const userTel = userData.tel;
+                                      const userDateSelect = userData.dateselect;
+                                      const userProvince = userData.province;
+                                      const userAmphure = userData.amphure;
+                                      const userTambon = userData.tambon; 
+                                      const status = userData.status; 
+                                                              
+                                      // console.log(userName)
+                                      const message = `สวัสดีคุณ👋${userName} ${userLast}🌟 
+                                      \n✅คุณได้ทำการนัดหมายเสร็จสิ้น✅ 
+                                      \nข้อมูลของคุณ
+                                      \n👤: ${userName}
+                                      \n👤: ${userLast}
+                                      \n📞: ${userTel}
+                                      \n📅: ${userDateSelect}
+                                      \n🚩: ${userAddress} ต.${userTambon} อ.${userAmphure} จ.${userProvince} 
+                                      \n💡: ${status}
+                                      \n📢ระบบได้ทำการนัดหมายเสร็จสิ้นแล้ว📢`;
+                                      async function sendMessage(userId, message) {
+                                              try {
+                                                  const url = ' https://977f-2001-fb1-d-abd9-d84a-67e0-dadc-e519.ngrok-free.app/send-message'; // URL ของ proxy server ของคุณ
+                                                  const data = {
+                                                      to: userId,
+                                                      messages: [
+                                                          {
+                                                              type: 'text',
+                                                              text: message
+                                                          }
+                                                      ]
+                                                  };
+
+                                                  const response = await axios.post(url, data);
+                                                  console.log('Message sent:', response.data);
+                                              } catch (error) {
+                                                  console.error('Error sending message:', error.response ? error.response.data : error.message);
+                                              }
+                                          }
+                                          sendMessage(userId, message);
+                                          liff.closeWindow();
+                                          }
+                              });
+                          });
+                      })
+                      .catch((error) => {
+                          console.error("Error updating status: ", error);
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'เกิดข้อผิดพลาด',
+                              text: 'ไม่สามารถยืนยันการจองได้: ' + error.message
+                          });
+                      });
+              }
+          });
+      }
+
+
+
+      function deleteUser(userId) {
+      Swal.fire({
+        title: "คุณต้องการจะยกเลิกการจอง?",
+        text: "ข้อมูลของคุณจะถูกลบ",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: 'ยกเลิกการจอง ',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true,
+        customClass: {
+            confirmButton: 'btn-cancel-reservation'
+          }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const userRef = firebase.database().ref("Users/" + userId);
+          userRef.remove()
+            .then(() => {
+              // ลบข้อมูลสำเร็จ
+              Swal.fire({
+                title: "คุณได้ยกเลิกการจอง",
+                text: "ข้อมูลของคุณถูกลบแล้ว",
+                icon: "success",
+                showConfirmButton: true,
+                timer: 1500
+              }).then(() => {
+                // Reload หน้าเมื่อกดปุ่ม OK
+                location.reload();
+              });
+            })
+            .catch((error) => {
+              console.error("Error removing document: ", error);
+              // แสดงข้อความเกี่ยวกับข้อผิดพลาดในการลบข้อมูล
+              Swal.fire({
+                icon: 'error',
+                title: 'เกิดข้อผิดพลาด',
+                text: 'ไม่สามารถลบข้อมูลได้: ' + error.message
+              });
+              document.querySelector('.showdataUser').innerHTML = "Error deleting document: " + error.message;
+            });
+        }
+      });
+    }
+
+
+
+    function showData() {
+    const userName = document.getElementById("userName").value;
+    const userLast = document.getElementById("userLast").value;
+    const userAddress = document.getElementById("userAddress").value;
+    const userTel = document.getElementById("userTel").value;
+    const dateselect = document.getElementById("dateselect").value;
+    const provinceSelect = document.getElementById("province");
+    const amphureSelect = document.getElementById("amphure");
+    const tambonSelect = document.getElementById("tambon");
+    const status = "Not confirm"; // เพิ่มการตั้งค่าสถานะเริ่มต้น
+
+    const selectedProvinceText = provinceSelect.options[provinceSelect.selectedIndex].text || "Select Province";
+    const selectedAmphureText = amphureSelect.options[amphureSelect.selectedIndex].text || "Select Amphure";
+    const selectedTambonText = tambonSelect.options[tambonSelect.selectedIndex].text || "Select Tambon";
+
+    if (userName && userLast && userAddress && userTel && dateselect) {
+        const bookingRef = firebase.database().ref("Booking/");
+        bookingRef.once('value').then((snapshot) => {
+            let dateBooked = false;
+            snapshot.forEach((childSnapshot) => {
+                if (childSnapshot.val().dateselect === dateselect) {
+                    dateBooked = true;
+                }
+            });
+            if (dateBooked) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'วันที่เลือกถูกจองแล้ว',
+                    text: 'โปรดเลือกวันที่อื่น',
+                    confirmButtonText: 'ตกลง'
+                });
+            } else {
+                Swal.fire({
+                    icon: "warning",
+                    title: "ข้อมูลการนัดหมาย",
+                    html: `
+                    <div class="SwalDesign" >
+                        <label><strong>วันที่เลือก:</strong></label><br>
+                        <input type="date" id="date" value="${dateselect}"><br>
+                        <label><strong>ชื่อ:</strong></label>
+                        <input type="text" id="swal-input1" value="${userName}">
+                        <label><strong>นามสกุล:</strong></label>
+                        <input type="text" id="swal-input2" value="${userLast}">
+                        <label><strong>เบอร์โทร:</strong></label>
+                        <input type="text" id="swal-input3" value="${userTel}">
+                        <br><br>
+                        <label><strong>ที่อยู่:</strong></label>
+                        <input type="text" id="swal-input4" value="${userAddress}">
+                        <label><strong>จังหวัด:</strong></label>
+                        <input type="text" id="swal-input5" value="${selectedProvinceText}">
+                        <label><strong>อำเภอ:</strong></label>
+                        <input type="text" id="swal-input6" value="${selectedAmphureText}">
+                        <label><strong>ตำบล:</strong></label>
+                        <input type="text" id="swal-input7" value="${selectedTambonText}">
+                    </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'บันทึก',
+                    cancelButtonText: 'ยกเลิก',
+                    reverseButtons: true,
+
+                    preConfirm: () => {
+                        const updatedDateselect = document.getElementById('date').value;
+                        const updatedUserName = document.getElementById('swal-input1').value;
+                        const updatedUserLast = document.getElementById('swal-input2').value;
+                        const updatedUserTel = document.getElementById('swal-input3').value;
+                        const updatedUserAddress = document.getElementById('swal-input4').value;
+                        const updatedProvince = document.getElementById('swal-input5').value;
+                        const updatedAmphure = document.getElementById('swal-input6').value;
+                        const updatedTambon = document.getElementById('swal-input7').value;
+
+                        // ส่งค่าที่แก้ไขหรือค่าเดิมไปยังฟังก์ชัน writeDatabase
+                        writeDatabase(
+                            updatedUserName || userName, 
+                            updatedUserLast || userLast, 
+                            updatedUserAddress || userAddress, 
+                            updatedUserTel || userTel, 
+                            updatedDateselect || dateselect, 
+                            updatedProvince || selectedProvinceText, 
+                            updatedAmphure || selectedAmphureText, 
+                            updatedTambon || selectedTambonText, 
+                            status
+                        ); 
+                    },
+                    customClass: {
+                        title: 'custom-title-class',
+                        htmlContainer: 'custom-html-container-class',
+                        confirmButton: 'swal2-confirm',
+                        cancelButton: 'custom-cancel-button-class',
+                        iconSwal_custom: 'icon'
+                    }
+                });
+            }
+        });
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "กรุณากรอกข้อมูลให้ครบ",
+        });
+    }
+}
+    
+function writeDatabase(userName, userLast, userAddress, userTel, dateselect, province, amphure, tambon, status) {
+    // ตรวจสอบค่าที่รับมาว่าถูกต้องหรือไม่
+    if (userName && userLast && userAddress && userTel && dateselect) {
+        firebase.database().ref("Users").orderByChild("dateselect").equalTo(dateselect).once('value', (snapshot) => {
+            if (snapshot.exists()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ตรวจสอบวันและเวลาอีกครั้ง',
+                    text: 'คิวการนัดวันนี้เต็มแล้ว'
+                });
+            } else {
+                firebase.database().ref("Users/" + uid).set({
+                    name: userName,
+                    lastname: userLast,
+                    address: userAddress,
+                    province: province,
+                    amphure: amphure,
+                    tambon: tambon,
+                    tel: userTel,
+                    dateselect: dateselect,
+                    status: status
+                }).then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'บันทึกข้อมูลเรียบร้อย',
+                        showConfirmButton: true,
+                        timer: 1500
+                    }).then(() => {
+                        location.reload();
+                    });
+                }).catch((error) => {
+                    Swal.fire({
+                        icon: "error",
+                        title: "เกิดข้อผิดพลาดในการบันทึกข้อมูล",
+                        text: error.message
+                    });
+                });
+            }
+        });
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "กรุณากรอกข้อมูลให้ครบ",
+        });
+    }
+}
+
+
+
+
+      
+    function editData(userName, userLast, userAddress, userTel, dateselect ,userProvince,userAmphure,userTambon) {
+    Swal.fire({
+        icon: "info",
+        title: "แก้ไขข้อมูล",
+        html: `
+            <div class = "SwalDesignEdit">
+                <label><strong>วันที่เลือก:</strong></label><br>
+                <input type="date" id="swal-input1"  value="${dateselect}"><br>
+                <label><strong>ชื่อ:</strong></label>
+                <input type="text" id="swal-input2"  value="${userName}">
+                <label><strong>นามสกุล:</strong></label>
+                <input type="text" id="swal-input3"  value="${userLast}">
+                <label><strong>เบอร์โทร:</strong></label>
+                <input type="text" id="swal-input4"  value="${userTel}">
+                <label><strong>ที่อยู่:</strong></label>
+                <input type="text" id="swal-input5"  value="${userAddress}">         
+                <label><strong>จังหวัด:</strong></label>
+                <input type="text" id="swal-input6"  value="${userProvince}">
+                <label><strong>อำเภอ:</strong></label>
+                <input type="text" id="swal-input7"  value="${userAmphure}">
+                <label><strong>ตำบล:</strong></label>
+                <input type="text" id="swal-input8" value="${userTambon}">
+            </div>
+        `,
+        
+        showCancelButton: true,
+        confirmButtonText: 'บันทึก',
+        cancelButtonText: 'ยกเลิก',
+        reverseButtons: true,
+        customClass: {
+            popup: 'custom-swal-width',
+            iconSwal_custom:'icon',
+            confirmButtonText:'btn-edit',
+            
+        } ,
+        preConfirm: () => {
+            const newDateSelect = document.getElementById("swal-input1").value; 
+            const newName = document.getElementById("swal-input2").value; 
+            const newLast = document.getElementById("swal-input3").value;
+            const newTel = document.getElementById("swal-input4").value;
+            const newAddress = document.getElementById("swal-input5").value; 
+            const newProvince = document.getElementById("swal-input6").value;
+            const newAmphure = document.getElementById("swal-input7").value;
+            const newTambon= document.getElementById("swal-input8").value;
+
+            if (newName && newLast && newAddress && newTel && newDateSelect) {
+                const dateRef = firebase.database().ref("Users").orderByChild("dateselect").equalTo(newDateSelect);
+                dateRef.once('value', (snapshot) => {
+                    if (snapshot.exists() && !snapshot.hasChild(uid)) {
+                      Swal.fire({
+                      icon: 'error',
+                      title: 'ตรวจสอบวันและเวลาอีกครั้ง',
+                      text: 'คิวการนัดวันนี้เต็มแล้ว'
+                  });
+                    } else {
+                        firebase.database().ref("Users/" + uid).update({
+                            name: newName,
+                            lastname: newLast,
+                            address: newAddress,
+                            tel: newTel,
+                            dateselect: newDateSelect,
+                            province : newProvince,
+                            amphure : newAmphure,
+                            tambon : newTambon,
+                            
+                        }).then(() => {
+                          Swal.fire({
+                          icon: 'success',
+                          title: 'บันทึกข้อมูลเรียบร้อย',
+                          showConfirmButton: true,
+                          timer: 1500
+                        }).then(() => {
+                          location.reload();
+                        });
+                        }).catch((error) => {
+                            alert("เกิดข้อผิดพลาดในการอัปเดตข้อมูล: " + error.message);
+                        });
+                    }
+                });
+            } else {
+                alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+            }
+        }
+    });
+  }
+
+  //////////API/////////////
+  function populateProvinces() {
+            fetch(
+                "https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province_with_amphure_tambon.json"
+            )
+                .then((response) => response.json())
+                .then((result) => {
+                    const provinceSelect = document.getElementById("province");
+                    for (const province of Object.values(result)) {
+                        const option = document.createElement("option");
+                        option.value = province.id;
+                        option.textContent = `${province.name_th} `;
+                        provinceSelect.appendChild(option);
+                    }
+                });
+        }
+
+        // Function to update districts dropdown based on selected province
+        function updateAmphures() {
+            const provinceSelect = document.getElementById("province");
+            const amphureSelect = document.getElementById("amphure");
+            amphureSelect.innerHTML = '<option value="">Select ...</option>';
+            const selectedProvinceId = provinceSelect.value;
+            if (!selectedProvinceId) return;
+            fetch(
+                "https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province_with_amphure_tambon.json"
+            )
+                .then((response) => response.json())
+                .then((result) => {
+                    const selectedProvince = result.find(province => province.id === parseInt(selectedProvinceId));
+                    if (!selectedProvince) return;
+                    const amphures = selectedProvince.amphure;
+                    for (const amphure of amphures) {
+                        const option = document.createElement("option");
+                        option.value = amphure.id;
+                        option.textContent = `${amphure.name_th} `;
+                        amphureSelect.appendChild(option);
+                    }
+                });
+        }
+
+        // Function to update tambons dropdown based on selected amphure
+        function updateTambons() {
+            const amphureSelect = document.getElementById("amphure");
+            const tambonSelect = document.getElementById("tambon");
+            tambonSelect.innerHTML = '<option value="">Select ...</option>';
+            const selectedAmphureId = amphureSelect.value;
+            if (!selectedAmphureId) return;
+            fetch(
+                "https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province_with_amphure_tambon.json"
+            )
+                .then((response) => response.json())
+                .then((result) => {
+                    const selectedProvinceId = document.getElementById("province").value;
+                    const selectedProvince = result.find(province => province.id === parseInt(selectedProvinceId));
+                    if (!selectedProvince) return;
+                    const selectedAmphure = selectedProvince.amphure.find(amphure => amphure.id === parseInt(selectedAmphureId));
+                    if (!selectedAmphure) return;
+                    const tambons = selectedAmphure.tambon;
+                    for (const tambon of tambons) {
+                        const option = document.createElement("option");
+                        option.value = tambon.id;
+                        option.textContent = `${tambon.name_th} `;
+                        tambonSelect.appendChild(option);
+                    }
+                });
+        }
+
+        // Event listener when DOM content is loaded, call populateProvinces function
+        document.addEventListener("DOMContentLoaded", populateProvinces);
+
+
+
+
+
+    </script>
+</body>
+
+
+
+</html>

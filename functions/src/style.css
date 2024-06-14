@@ -1,0 +1,532 @@
+body {
+    font-family: "Kanit", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #EBEBEB;
+}
+.display_show {
+    width: 100%;
+    height: 62px;
+    background-color:#FFFFFF;
+    margin-top: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 5px;
+    box-shadow: 0px 2px 9px rgba(0, 0, 0, 0.2);
+}
+p {
+    font-size: 20px;
+    font-weight: bold;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 337px;
+    height: 100%;
+    background-color: #BEBEBE;
+    border-radius: 10px;
+    margin-top: 20px;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+.text_container {
+    font-size: 18px;
+    font-weight: 400;
+    font-style: normal;
+    margin-bottom: 10px;
+}
+.information, select {
+    width: 100%;
+    height: 40px;
+    background-color: #fff;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 0 10px;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+}
+select {
+    padding: 0 10px;
+}
+.message {
+    padding: 10px;
+    background: #ddd;
+}
+#lineImage {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+}
+.btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+#accept, #logout {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+#accept {
+    background-color: #000000;
+    color: #fff;
+    margin-left: 20px;
+    
+}
+#logout {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+#province ,#tambon,#amphure {
+    font-size: 16px;
+    color: #757575;
+}
+
+select option{
+    margin-top: 200px;
+}
+.card{
+    width: 337px;
+    height: auto;
+    
+}
+.card .text-card{
+    margin: 0 auto;
+    text-align: center;
+}
+.card p{
+    font-size: 16px;
+}
+
+
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+.text-card p {
+    margin: 10px 0;
+}
+
+#imglogowhite{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.confirm-button {
+    background-color: #28a745; /* สีเขียว */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  
+}
+
+.confirm-button:hover {
+    background-color: #218838; /* สีเขียวที่เข้มขึ้นเมื่อ hover */
+}
+
+
+
+
+
+
+
+@media (max-width: 600px) {
+    #verificationForm input[type="text"],
+    #verificationForm input[type="datetime-local"],
+    #verificationForm input[type="button"] {
+        font-size: 14px;
+    }
+}
+
+
+.profile{
+    text-align: center;
+    color: white;
+    padding-bottom: 5px;
+}
+
+.navbar{
+    width: 100%;
+    height: 90px;
+    background-color: #161415;
+
+}
+
+.image-container {
+    width: 80px; 
+    height: 80px; 
+    overflow: hidden;
+    
+  }
+
+  .image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+  }
+#toggle-btn{
+    background-color: rgb(255, 255, 255);
+}
+
+.fa-custom-size {
+    font-size: 30px; /* ขนาดที่คุณต้องการ */
+  }
+
+
+.sssss{
+    width: 200px;
+    height: 200px;
+}
+
+
+.line{
+    width: 550px;
+    height: 1px;
+    background-color: #b6b6b6;
+    margin: 0 auto;
+}
+
+
+
+.booking-container{
+    width: 600px;
+    height: 700px;
+    background-color: #fdfdfd;
+    border-radius: 10px;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bookingdata{
+    font-size: 20px;
+    color: rgb(0, 0, 0);  
+    margin-left: 40px;
+    margin-top: 20px;
+}
+
+.bookingdata-text{
+    margin-left: 24px;
+}
+
+
+#update {
+    background-color: #FFB13D;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 30px;
+    margin-top: 20px;
+  
+   
+}
+
+#update:hover {
+    background-color: #e9a237;
+}
+
+
+
+#delete {
+    background-color: rgb(238, 1, 1);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 30%;
+    margin-top: 35px;
+   
+   
+}
+
+#delete:hover {
+    background-color: darkred;
+}
+
+#confirm {
+    background-color: #1BBF18;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    
+}
+
+#confirm:hover {
+    background-color: #16a514;
+}
+
+
+
+.acacac {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.acacac strong {
+    font-weight: bold;
+}
+
+.acacac button {
+    margin-top: 10px;
+}
+
+
+/* SWALALERT */
+
+
+.SwalDesign {
+    width: 440px; /* ให้กล่องข้อมูลรองรับความกว้างของหน้าจอ */
+    height: auto; /* ให้ความสูงของกล่องขยายขนาดตามข้อมูล */
+    text-align: left;
+    padding: 10px; /* เพิ่มช่องว่างรอบข้อมูล */
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+/* Custom styles for Swal.fire icon */
+
+.SwalDesign strong {
+    font-size: 18px; /* ขนาดตัวหนาของข้อความ */
+}
+
+.SwalDesign input {
+    width: 100%;
+    height: 40px;
+    padding: 5px; /* เพิ่มช่องว่างของข้อมูลใน input */
+    border: 1px solid #202020; /* เส้นขอบของ input */
+    border-radius: 5px; /* มุมของ input */
+}
+
+.swal2-confirm {
+    background-color: #161415 !important;
+    color: white !important;
+    border-color: #161415 !important;
+}
+
+
+
+
+.SwalDesignEdit  {
+    width: 440px; /* ให้กล่องข้อมูลรองรับความกว้างของหน้าจอ */
+    height: auto; /* ให้ความสูงของกล่องขยายขนาดตามข้อมูล */
+    text-align: left;
+    padding: 10px; /* เพิ่มช่องว่างรอบข้อมูล */
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+   
+}
+
+
+.SwalDesignEdit strong {
+    font-size: 18px; /* ขนาดตัวหนาของข้อความ */
+}
+
+
+.SwalDesignEdit input  {
+    width: 100%;
+    height: 40px;
+    padding: 5px; /* เพิ่มช่องว่างของข้อมูลใน input */
+    border: 1px solid #202020; /* เส้นขอบของ input */
+    border-radius: 5px; /* มุมของ input */
+   
+}
+
+.swal2-confirm.btn-cancel-reservation {
+    background-color: #E93636 !important;
+    color: white !important;
+}
+
+.swal2-confirm.btn-accept-reservation{
+    background-color: #1BBF18 !important;
+    color: white !important;
+}
+
+
+@media screen and (max-width: 767px) {
+    .SwalDesign {
+        max-width: 414px;
+        width: 100%; 
+        
+
+        
+    }
+
+    .SwalDesign input {
+        height: 30px;
+        
+    }
+
+    .swal2-title {
+        
+        font-size: 18px; /* ขนาดฟอนต์ */
+    
+    }
+
+    .swal2-icon.swal2-warning {
+        font-size: 10px;
+    }
+    .swal2-icon.swal2-info {
+        font-size: 10px;
+    }
+
+    .SwalDesignEdit input  {
+        width: 100%;
+        height: 30px;
+        
+    }
+
+    .SwalDesignEdit  {
+        max-width: 414px;
+        width: 100%; 
+
+       
+    }
+
+    .booking-container{
+        width: 300px;
+        height: 450px;
+    }
+    
+    .bookingdata{
+        font-size: 14px;
+        color: rgb(0, 0, 0);  
+        margin-left: 40px;
+        margin-top: 5px;
+    }
+    
+    .bookingdata-text{
+        font-size: 18px;
+        margin-left: 24px;
+    }
+
+    #update {
+        width: 90px;
+        height: 35px;
+        margin-top: 10px;
+        font-size: 11.5px;
+    }
+
+    #delete {
+        width: 102px;
+        height: 35px;
+        margin-top: 10px;
+        margin-left: 30px;
+        font-size: 11.5px;
+       
+    }
+    
+    
+    #confirm {
+        width: 107px;
+        height: 35px;
+        margin-top: 10px;
+        font-size: 11.5px;
+    }
+    
+    
+    
+   
+
+    
+}
+
+@media (min-width: 768px) {
+
+    .display_show{
+        width: 100%;
+        height: 80px;
+        
+        }
+            p{
+                font-size: 20px;
+                font-weight: bold;
+                
+               
+        }
+    
+    .container {
+        width: 700px; /* เพิ่มขนาดความกว้างของ container สำหรับ desktop */
+        height: 750px;
+        padding: 30px; /* เพิ่ม padding สำหรับ desktop */
+    }
+
+    .information {
+        width: 100%; /* ลดความกว้างของ input เพื่อให้มีพื้นที่ข้าง ๆ */
+        height: 60px;
+        font-size: 20px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    #accept, #logout {
+        width: 20%; /* ปรับขนาดปุ่มให้เหมาะกับเนื้อหา */
+        height: 60px;
+        margin: 0 10px; /* เพิ่มระยะห่างระหว่างปุ่ม */
+        
+    }
+
+    .information:nth-child(odd) {
+        margin-right: 4%; /* เพิ่มระยะห่างขวาสำหรับ input ที่เป็นเลขคี่ */
+    }
+
+    .information, select {
+        width: 100%;
+        height: 50px;
+        background-color: #fff;
+        border: none;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        padding: 0 10px;
+        box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #province ,#tambon,#amphure  {
+        font-size: 20px;
+
+    }
+
+    #lineImage {
+        width: 65px;
+        height: 65px;
+       
+    }
+
+    .card{
+        width: 600px;
+    }
+
+    #imglogowhite{
+        width: 300px;
+        height: 300px;
+        
+    }
+    
+}
+
+
+
