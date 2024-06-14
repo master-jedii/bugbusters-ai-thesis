@@ -73,4 +73,35 @@ const pilaPestControl = [
   
 ];
 
-module.exports = { pilaPestControl };
+const priceTermite = [
+  {
+    serviceTermite: "บริการกำจัดปลวก",
+    price: "ราคารเริ่มต้นอยู่ที่ 5000 บาท",
+    type: [
+      {
+        type: "ทาวน์เฮ้าส์/ทาวน์โฮม",
+        price: "5000 บาท",
+        contract: "สัญญา 1 ปี ตรวจเช็คทุก 4 เดือน"
+      },
+      {
+        type: "บ้านเดี่ยว",
+        area: [
+          {
+            size: "70 ตารางเมตร",
+            price: "6000 บาท"
+          },
+          {
+            size: "100 ตารางเมตร",
+            price: "8000 บาท"
+          },
+          {
+            size: "101-150 ตารางเมตร",
+            price: "10,000 - 15,000 บาท"
+          }
+        ]
+      }
+    ]
+  }
+];
+
+module.exports = { pilaPestControl ,priceTermite };

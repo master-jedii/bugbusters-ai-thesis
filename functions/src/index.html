@@ -142,6 +142,7 @@
 
       let profile;
       let uid;
+      let badWords = []; // เก็บคำหยาบที่ได้จาก JSON
       
 
       const main = async () => {
@@ -417,7 +418,27 @@
 
 
 
-    function showData() {
+// ดึงข้อมูล JSON ด้วย fetch()
+fetch('badword.json')
+    .then(response => response.json()) // แปลงการตอบกลับเป็น JSON
+    .then(data => {
+        // เก็บข้อมูลคำหยาบที่ได้ในตัวแปร badWords
+        badWords = data;
+    })
+    .catch(error => console.error('Error loading JSON:', error)); // จัดการข้อผิดพลาด
+
+// ฟังก์ชันตรวจสอบคำหยาบ
+function containsBadWords(input) {
+    // ตรวจสอบคำหยาบจากตัวแปร badWords
+    for (const word of badWords) {
+        if (input.includes(word)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function showData() {
     const userName = document.getElementById("userName").value;
     const userLast = document.getElementById("userLast").value;
     const userAddress = document.getElementById("userAddress").value;
@@ -431,6 +452,16 @@
     const selectedProvinceText = provinceSelect.options[provinceSelect.selectedIndex].text || "Select Province";
     const selectedAmphureText = amphureSelect.options[amphureSelect.selectedIndex].text || "Select Amphure";
     const selectedTambonText = tambonSelect.options[tambonSelect.selectedIndex].text || "Select Tambon";
+
+    // ตรวจสอบคำหยาบ
+    if (containsBadWords(userName) || containsBadWords(userLast) || containsBadWords(userAddress)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'พบคำที่ไม่เหมาะสม',
+            text: 'กรุณาอย่าใช้คำหยาบในข้อมูลที่กรอก'
+        });
+        return;
+    }
 
     if (userName && userLast && userAddress && userTel && dateselect) {
         const bookingRef = firebase.database().ref("Booking/");
@@ -453,7 +484,7 @@
                     icon: "warning",
                     title: "ข้อมูลการนัดหมาย",
                     html: `
-                    <div class="SwalDesign" >
+                    <div class="SwalDesign">
                         <label><strong>วันที่เลือก:</strong></label><br>
                         <input type="date" id="date" value="${dateselect}"><br>
                         <label><strong>ชื่อ:</strong></label>
@@ -477,7 +508,6 @@
                     confirmButtonText: 'บันทึก',
                     cancelButtonText: 'ยกเลิก',
                     reverseButtons: true,
-
                     preConfirm: () => {
                         const updatedDateselect = document.getElementById('date').value;
                         const updatedUserName = document.getElementById('swal-input1').value;
@@ -487,6 +517,15 @@
                         const updatedProvince = document.getElementById('swal-input5').value;
                         const updatedAmphure = document.getElementById('swal-input6').value;
                         const updatedTambon = document.getElementById('swal-input7').value;
+
+                        if (containsBadWords(updatedUserName) || containsBadWords(updatedUserLast) || containsBadWords(updatedUserAddress)) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'พบคำที่ไม่เหมาะสม',
+                                text: 'กรุณาอย่าใช้คำหยาบในข้อมูลที่กรอก'
+                            });
+                            return false; // ยกเลิกการบันทึก
+                        }
 
                         // ส่งค่าที่แก้ไขหรือค่าเดิมไปยังฟังก์ชัน writeDatabase
                         writeDatabase(
@@ -518,6 +557,7 @@
         });
     }
 }
+
     
 function writeDatabase(userName, userLast, userAddress, userTel, dateselect, province, amphure, tambon, status) {
     // ตรวจสอบค่าที่รับมาว่าถูกต้องหรือไม่
@@ -614,6 +654,15 @@ function writeDatabase(userName, userLast, userAddress, userTel, dateselect, pro
             const newProvince = document.getElementById("swal-input6").value;
             const newAmphure = document.getElementById("swal-input7").value;
             const newTambon= document.getElementById("swal-input8").value;
+
+            if (containsBadWords(newName) || containsBadWords(newLast) || containsBadWords(newAddress)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'พบคำที่ไม่เหมาะสม',
+                    text: 'กรุณาอย่าใช้คำหยาบในข้อมูลที่กรอก'
+                });
+                return false;
+            }
 
             if (newName && newLast && newAddress && newTel && newDateSelect) {
                 const dateRef = firebase.database().ref("Users").orderByChild("dateselect").equalTo(newDateSelect);
