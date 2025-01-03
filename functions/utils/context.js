@@ -76,7 +76,6 @@ const pilaPestControl = [
 const priceTermite = [
   {
     serviceTermite: "บริการกำจัดปลวก",
-    price: "ราคารเริ่มต้นอยู่ที่ 5000 บาท",
     type: [
       {
         type: "ทาวน์เฮ้าส์/ทาวน์โฮม",
@@ -91,11 +90,19 @@ const priceTermite = [
             price: "6000 บาท"
           },
           {
+            size: "80 ตารางเมตร",
+            price: "6000 บาท"
+          },
+          {
+            size: "90 ตารางเมตร",
+            price: "6000 บาท"
+          },
+          {
             size: "100 ตารางเมตร",
             price: "8000 บาท"
           },
           {
-            size: "101-150 ตารางเมตร",
+            size: "110-150 ตารางเมตร",
             price: "10,000 - 15,000 บาท"
           }
         ]
@@ -104,4 +111,91 @@ const priceTermite = [
   }
 ];
 
-module.exports = { pilaPestControl ,priceTermite };
+const priceAnt = [
+  {
+    serviceAnt: "บริการกำจัดมด",
+    price: "ราคาเริ่มต้นอยู่ที่ 5000 บาท",
+    type: [
+      {
+        type: "ทาวน์เฮ้าส์/ทาวน์โฮม",
+        contract: "สัญญา 1 ปี ตรวจเช็คทุก 4 เดือน"
+      },
+      {
+        type: "บ้านเดี่ยว",
+        area: [
+          {
+            size: "70 ตารางเมตร",
+            price: "6000 บาท"
+          },
+          {
+            size: "80 ตารางเมตร",
+            price: "6000 บาท"
+          },
+          {
+            size: "90 ตารางเมตร",
+            price: "6000 บาท"
+          },
+          {
+            size: "100 ตารางเมตร",
+            price: "8000 บาท"
+          },
+          {
+            size: "110-150 ตารางเมตร-ขึ้นไป",
+            price: "10,000 - 15,000 บาท"
+          }
+        ]
+      }
+    ]
+  }
+];
+
+
+const priceCockroach= [
+  {
+    serviceCockroach: "บริการกำจัดแมลงสาบ",
+    type: [
+      {
+        type: "ทาวน์เฮ้าส์/ทาวน์โฮม",
+        price: "5000 บาท",
+        contract: "สัญญา 1 ปี ตรวจเช็คทุก 4 เดือน"
+      },
+      {
+        type: "บ้านเดี่ยว",
+        area: [
+          {
+            size: "70 ตารางเมตร",
+            price: "6000 บาท"
+          },
+          {
+            size: "80 ตารางเมตร",
+            price: "6000 บาท"
+          },
+          {
+            size: "90 ตารางเมตร",
+            price: "6000 บาท"
+          },
+          {
+            size: "100 ตารางเมตร",
+            price: "8000 บาท"
+          },
+          {
+            size: "110-150 ตารางเมตร-ขึ้นไป",
+            price: "10,000 - 15,000 บาท"
+          }
+        ]
+      }
+    ]
+  }
+];
+
+const priceRat= [
+  {
+    serviceRat: "บริการกำจัดหนู",
+    price: "ราคาเริ่มต้นอยู่ที่ 5000 บาท",
+    contract: "1 เดือน ตรวจเช็คงาน 3 ครั้ง",
+    note: "หมายเหตุ: ราคาขึ้นอยู่กับพื้นที่เข้านัดสำรวจ"
+    
+  }
+];
+
+module.exports = { pilaPestControl ,priceTermite ,priceAnt,priceCockroach,priceRat};

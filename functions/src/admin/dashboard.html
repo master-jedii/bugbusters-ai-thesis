@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <!-- Firebase Database -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <!-- Swalfire -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Cool Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <!-- Our stylesheet -->
+    <link rel="apple-touch-icon" href="/docs/5.0/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" href="/docs/5.0/assets/img/favicons/favicon.ico">
+    <link rel="mask-icon" href="/docs/5.0/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="component/component.js"></script>
+    <script src="firebaseauth.js"></script>
+
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 90px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            z-index: 99;
+        }
+  
+        @media (max-width: 767.98px) {
+            .sidebar {
+                top: 11.5rem;
+                padding: 0;
+            }
+        }
+            
+        .navbar {
+            box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .1);
+        }
+  
+        @media (min-width: 767.98px) {
+            .navbar {
+                top: 0;
+                position: sticky;
+                z-index: 999;
+            }
+        }
+  
+        .sidebar .nav-link {
+            color: #333;
+        }
+  
+        .sidebar .nav-link.active {
+            color: #0d6efd;
+        }
+    </style>
+    
+</head>
+<body>
+
+    <div class="container-fluid" id="content_container">
+        <div class="row">
+            <navbar-component></navbar-component>
+            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+                <h1 class="h2">Dashboard</h1>
+                <p>This is the homepage of a simple admin interface which is part of a tutorial written on Themesberg</p>
+                
+                <div>
+                  <div class="card">
+                    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+                  </div>
+              </div>
+                <div class="row my-3">
+                  <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                      <div class="card">
+                          <h5 class="card-header">การจองคิวทั้งหมด</h5>
+                          <div class="card-body">
+                              <h5> จำนวน: <span id="userCount"></span> คน</h5>
+                              <p id="currentMonth"></p>
+                              <p></p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                      <div class="card">
+                          <h5 class="card-header">พื้นที่การจองมากที่สุด</h5>
+                          <div class="card-body">
+                              <p class="card-title">จังหวัดที่มีการจองมากที่สุด: <span id="mostBookedProvince" class="text-success"></span></p>
+                              <p class="card-title">จังหวัดที่มีการจองน้อยที่สุด: <span id="leastBookedProvince" class="text-danger"></span></p>
+                              <p></p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                    <div class="card">
+                        <h5 class="card-header">สถานะยืนยันนัดสำรวจ</h5>
+                        <div class="card-body">
+                          <p class="card-text text-warning">รอการยืนยัน: <span id="pendingConfirmation" class="text-warning">(จำนวน) คน</span></p>
+                          <p class="card-text text-success">ยืนยันแล้ว: <span id="confirmed" class="text-success">(จำนวน) คน</span></p>                          
+                        </div>
+                    </div>  
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-12 mb-4 mb-lg-0">
+                  <div class="card">
+                    <h5 class="card-header">การจองล่าสุด</h5>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table w-100">
+                          <thead>
+                            <tr>
+                              <th scope="col">ชื่อ</th>
+                              <th scope="col">นามสกุล</th>
+                              <th scope="col">ที่อยู่</th>
+                              <th scope="col">จังหวัด</th>
+                              <th scope="col">อำเภอ</th>
+                              <th scope="col">ตำบล</th>
+                              <th scope="col">วันที่จอง</th>
+                              <th scope="col">สถานะ</th>
+                              <th scope="col">เบอร์โทรศัพท์</th>
+                              <th scope="col">การจองล่าสุด</th>
+                            </tr>
+                          </thead>
+                          <tbody id="userTableBody">
+                            <!-- Rows will be inserted here by JavaScript -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <a href="viewall.html" class="btn btn-block btn-light">View all</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                
+            </main>
+        </div>
+    </div>
+    
+    
+
+    
+
+    
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCxTCUmIzvkC8cTW_TETeZBOTZZ7aPqnhw",
+            authDomain: "geminibugbuster.firebaseapp.com",
+            databaseURL: "https://geminibugbuster-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "geminibugbuster",
+            storageBucket: "geminibugbuster.appspot.com",
+            messagingSenderId: "576048046575",
+            appId: "1:576048046575:web:dadf68947e6a0486ec561a",
+            measurementId: "G-NDN0MM76KS"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+        // Function to log out user
+        async function logOut() {
+            try {
+                await auth.signOut();
+                console.log("User logged out");
+                window.location.href = '/admin/index.html'; // Redirect to login page after logout
+                document.getElementById('authStatus').innerText = 'Logged out';
+            } catch (error) {
+                console.error("Error logging out:", error);
+                throw error;
+            }
+        }
+
+        // Function to check auth state when the page is loaded
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log("User is logged in:", user);
+                document.getElementById('authStatus').innerText = `Logged in as: ${user.email}`;
+                loadUserData(); // Load user data when user is logged in
+            } else {
+                console.log("No user is logged in");
+                window.location.href = '/admin/index.html'; // Redirect to login page if not logged in
+            }
+        });
+
+        // Event listener for logout button
+        document.getElementById('logoutButton').addEventListener('click', async () => {
+            try {
+                await logOut();
+                document.getElementById('authStatus').innerText = 'Logged out';
+            } catch (err) {
+                document.getElementById('authStatus').innerText = 'Error logging out';
+            }
+        });
+
+        // Function to load user data
+        function loadUserData() {
+            console.log('Loading user data...');
+            const tableBody = document.getElementById('userTableBody');
+            const userCountElement = document.getElementById('userCount');
+            const dateselectElement = document.getElementById('dateselect');
+
+            const usersRef = firebase.database().ref('Users');
+            let totalUserCount = 0;
+
+            // Count total users in Firebase
+            usersRef.once('value', (snapshot) => {
+                totalUserCount = snapshot.numChildren();
+                if (userCountElement) {
+                    userCountElement.textContent = totalUserCount; // Display total users
+                }
+            });
+
+            // Fetch latest 5 users by timestamp
+            usersRef.orderByChild('timestamp').limitToLast(5).on('value', (snapshot) => {
+                console.log('Data snapshot received', snapshot.val());
+                const sortedUsers = [];
+                let latestDateselect = '';
+                let userCount = 0;
+
+                snapshot.forEach((childSnapshot) => {
+                    const userData = childSnapshot.val();
+                    sortedUsers.push(userData);
+
+                    if (!latestDateselect || new Date(userData.timestamp) > new Date(latestDateselect)) {
+                        latestDateselect = userData.dateselect;
+                    }
+
+                    userCount++; // Count logged-in users
+                });
+
+                sortedUsers.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                tableBody.innerHTML = '';
+
+                sortedUsers.forEach(user => {
+                    const row = document.createElement('tr');
+                    const timestampDate = new Date(user.timestamp);
+                    const timestampFormatted = timestampDate.toLocaleString();
+
+                    let statusColorClass = '';
+                    if (user.status === 'Confirmed') {
+                        statusColorClass = 'text-success';
+                    } else if (user.status === 'Canceled') {
+                        statusColorClass = 'text-danger';
+                    } else if (user.status === 'Not confirm') {
+                        statusColorClass = 'text-warning';
+                    }
+
+                    row.innerHTML = `
+                        <td>${user.name}</td>
+                        <td>${user.lastname}</td>
+                        <td>${user.address}</td>
+                        <td>${user.province}</td>
+                        <td>${user.amphure}</td>
+                        <td>${user.tambon}</td>
+                        <td>${user.dateselect}</td>
+                        <td class="${statusColorClass}">${user.status}</td>
+                        <td>${user.tel}</td>
+                        <td>${timestampFormatted}</td>
+                    `;
+
+                    tableBody.appendChild(row);
+                });
+
+                if (userCountElement) {
+                    // Display the number of last 5 logged-in users
+                    userCountElement.textContent = userCount;
+                }
+
+                if (dateselectElement) {
+                    dateselectElement.textContent = `Latest date select: ${latestDateselect}`;
+                }
+
+                calculateProvinceStats(sortedUsers);
+            });
+        }
+
+        // Load user data when the page is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserData();
+        });
+
+        // Function to calculate province statistics
+        function calculateProvinceStats(users) {
+            const mostBookedProvinceElement = document.getElementById('mostBookedProvince');
+            const leastBookedProvinceElement = document.getElementById('leastBookedProvince');
+
+            const provinceCounts = {};
+
+            users.forEach(user => {
+                const province = user.province;
+                if (provinceCounts[province]) {
+                    provinceCounts[province]++;
+                } else {
+                    provinceCounts[province] = 1;
+                }
+            });
+
+            let mostBookedProvince = '';
+            let leastBookedProvince = '';
+            let maxCount = 0;
+            let minCount = Infinity;
+
+            for (const province in provinceCounts) {
+                const count = provinceCounts[province];
+                if (count > maxCount) {
+                    maxCount = count;
+                    mostBookedProvince = province;
+                }
+                if (count < minCount) {
+                    minCount = count;
+                    leastBookedProvince = province;
+                }
+            }
+
+            if (mostBookedProvinceElement) {
+                mostBookedProvinceElement.textContent = mostBookedProvince;
+            }
+            if (leastBookedProvinceElement) {
+                leastBookedProvinceElement.textContent = leastBookedProvince;
+            }
+        }
+
+        // Function to load status data
+        function loadStatusData() {
+            const pendingConfirmationElement = document.getElementById('pendingConfirmation');
+            const confirmedElement = document.getElementById('confirmed');
+
+            const usersRef = firebase.database().ref('Users');
+
+            usersRef.on('value', (snapshot) => {
+                let pendingConfirmationCount = 0;
+                let confirmedCount = 0;
+
+                snapshot.forEach((childSnapshot) => {
+                    const userData = childSnapshot.val();
+                    if (userData.status === 'Not confirm') {
+                        pendingConfirmationCount++;
+                    } else if (userData.status === 'Confirmed') {
+                        confirmedCount++;
+                    }
+                });
+
+                pendingConfirmationElement.textContent = pendingConfirmationCount;
+                confirmedElement.textContent = confirmedCount;
+            });
+        }
+
+        // Load status data when the page is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStatusData();
+        });
+
+        // Function to create chart
+        const xValues = ["กรุงเทพมหานคร", "นนทบุรี", "ปทุมธานี", "สมุทรปราการ", "สมุทรสาคร", "นครปฐม"];
+        let yValues = [0, 0, 0, 0, 0, 0]; // สร้าง array ให้มีขนาดเท่ากับ xValues และเติมค่าเริ่มต้นเป็น 0
+
+        const usersRef = firebase.database().ref('Users');
+
+        usersRef.once('value', (snapshot) => {
+            snapshot.forEach((childSnapshot) => {
+                const userData = childSnapshot.val();
+                const province = userData.province;
+
+                if (province && xValues.includes(province)) {
+                    const index = xValues.indexOf(province);
+                    yValues[index]++;
+                }
+            });
+
+            const ctx = document.getElementById("myChart").getContext("2d");
+            const myChart = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "rgba(0,0,255,1.0)",
+                        borderColor: "rgba(0,0,255,0.1)",
+                        data: yValues
+                    }]
+                },
+                options: {
+                    legend: { display: false },
+                    scales: {
+                        yAxes: [{
+                            ticks: { min: 0, max: 10, stepSize: 1 } // กำหนดค่า y-axis min เป็น 0 และ max เป็น 10
+                        }]
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+
+
+
+/* SWALALERT */
+.SwalDesign {
+    width: 440px; /* ให้กล่องข้อมูลรองรับความกว้างของหน้าจอ */
+    height: auto; /* ให้ความสูงของกล่องขยายขนาดตามข้อมูล */
+    text-align: left;
+    padding: 10px; /* เพิ่มช่องว่างรอบข้อมูล */
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+/* Custom styles for Swal.fire icon */
+
+.SwalDesign strong {
+    font-size: 18px; /* ขนาดตัวหนาของข้อความ */
+}
+
+.SwalDesign input {
+    width: 100%;
+    height: 40px;
+    padding: 5px; /* เพิ่มช่องว่างของข้อมูลใน input */
+    border: 1px solid #202020; /* เส้นขอบของ input */
+    border-radius: 5px; /* มุมของ input */
+}
+
+.swal2-confirm {
+    background-color: #161415 !important;
+    color: white !important;
+    border-color: #161415 !important;
+}
+
+
+
+
+.SwalDesignEdit  {
+    width: 440px; /* ให้กล่องข้อมูลรองรับความกว้างของหน้าจอ */
+    height: auto; /* ให้ความสูงของกล่องขยายขนาดตามข้อมูล */
+    text-align: left;
+    padding: 10px; /* เพิ่มช่องว่างรอบข้อมูล */
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+   
+}
+
+
+.SwalDesignEdit strong {
+    font-size: 18px; /* ขนาดตัวหนาของข้อความ */
+}
+
+
+.SwalDesignEdit input  {
+    width: 100%;
+    height: 40px;
+    padding: 5px; /* เพิ่มช่องว่างของข้อมูลใน input */
+    border: 1px solid #202020; /* เส้นขอบของ input */
+    border-radius: 5px; /* มุมของ input */
+   
+}
+
+.swal2-confirm.btn-cancel-reservation {
+    background-color: #E93636 !important;
+    color: white !important;
+}
+
+.swal2-confirm.btn-accept-reservation{
+    background-color: #1BBF18 !important;
+    color: white !important;
+}
+
+
+
+

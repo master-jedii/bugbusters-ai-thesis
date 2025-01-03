@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Data</title>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core/main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js"></script>
+    <script src="component/component.js"></script>
+    <style>
+        .text-success { color: green; }
+        .text-danger { color: red; }
+        .text-warning { color: orange; }
+        #calendar {
+            width: 100%;
+            max-width: 1550px;
+            height: 500px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            color: #000000;
+            font-family: Arial, sans-serif;
+            position: relative;
+            left: 175px;
+
+        }
+
+      .sidebar {
+          position: fixed;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          z-index: 100;
+          padding: 90px 0 0;
+          box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+          z-index: 99;
+      }
+
+      @media (max-width: 767.98px) {
+          .sidebar {
+              top: 11.5rem;
+              padding: 0;
+          }
+      }
+          
+      .navbar {
+          box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .1);
+      }
+
+      @media (min-width: 767.98px) {
+          .navbar {
+              top: 0;
+              position: sticky;
+              z-index: 999;
+          }
+      }
+
+      .sidebar .nav-link {
+          color: #333;
+      }
+
+      .sidebar .nav-link.active {
+          color: #0d6efd;
+      }
+    </style>
+</head>
+<body>
+    <div class="container-fluid" id="content_container">
+        <div class="row">
+            <navbar-component></navbar-component>
+            <div class="row">
+                <div id="calendar"></div>
+            </div>
+            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4" style="margin-left: 316px;">
+                <div class="row">
+                    <div class="col-12 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h5 class="card-header">รายละเอียดการจอง</h5>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table w-100">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ชื่อ</th>
+                                                <th scope="col">นามสกุล</th>
+                                                <th scope="col">ที่อยู่</th>
+                                                <th scope="col">จังหวัด</th>
+                                                <th scope="col">อำเภอ</th>
+                                                <th scope="col">ตำบล</th>
+                                                <th scope="col">วันที่จอง</th>
+                                                <th scope="col">สถานะ</th>
+                                                <th scope="col">เบอร์โทรศัพท์</th>
+                                                <th scope="col">การจองล่าสุด</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="userTableBody">
+                                            <!-- Rows will be inserted here by JavaScript -->
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyCxTCUmIzvkC8cTW_TETeZBOTZZ7aPqnhw",
+            authDomain: "geminibugbuster.firebaseapp.com",
+            databaseURL: "https://geminibugbuster-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "geminibugbuster",
+            storageBucket: "geminibugbuster.appspot.com",
+            messagingSenderId: "576048046575",
+            appId: "1:576048046575:web:dadf68947e6a0486ec561a",
+            measurementId: "G-NDN0MM76KS"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        function loadUserData(filterDateselect, filterProvince, filterStatus) {
+            console.log('Loading user data...');
+            const tableBody = document.getElementById('userTableBody');
+            const userCountElement = document.getElementById('userCount');
+            const dateselectElement = document.getElementById('dateselect');
+
+            const usersRef = firebase.database().ref('Users');
+
+            usersRef.orderByChild('timestamp').on('value', (snapshot) => {
+                console.log('Data snapshot received', snapshot.val());
+                const sortedUsers = [];
+                let latestDateselect = '';
+
+                snapshot.forEach((childSnapshot) => {
+                    const userData = childSnapshot.val();
+                    userData.key = childSnapshot.key; // Save the unique key for each user
+                    
+                    // Apply filters
+                    if ((filterDateselect && userData.dateselect !== filterDateselect) || 
+                        (filterProvince && userData.province !== filterProvince) ||
+                        (filterStatus && userData.status !== filterStatus)
+                    ) {
+                        return; // Skip this user if it doesn't match the filters
+                    }
+
+                    sortedUsers.push(userData);
+
+                    if (!latestDateselect || new Date(userData.timestamp) > new Date(latestDateselect)) {
+                        latestDateselect = userData.dateselect;
+                    }
+                });
+
+                sortedUsers.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                tableBody.innerHTML = '';
+                let userCount = 0;
+
+                sortedUsers.forEach(user => {
+                const row = document.createElement('tr');
+                const timestampDate = new Date(user.timestamp);
+                const timestampFormatted = timestampDate.toLocaleString();
+
+                let statusColorClass = '';
+                if (user.status === 'Confirmed') {
+                    statusColorClass = 'text-success';
+                } else if (user.status === 'Canceled') {
+                    statusColorClass = 'text-danger';
+                } else if (user.status === 'Not confirm') {
+                    statusColorClass = 'text-warning';
+                }
+
+                row.innerHTML = `
+                    <td>${user.name}</td>
+                    <td>${user.lastname}</td>
+                    <td>${user.address}</td>
+                    <td>${user.province}</td>
+                    <td>${user.amphure}</td>
+                    <td>${user.tambon}</td>
+                    <td>${user.dateselect}</td>
+                    <td class="${statusColorClass}">${user.status}</td>
+                    <td>${user.tel}</td>
+                    <td>${timestampFormatted}</td>
+                `;
+
+                // Add onclick event to the row
+                row.onclick = function() {
+                    console.log(`Clicked row for user with ID: ${user.key}`);
+                    // Add your logic here for what should happen when the row is clicked
+                };
+
+                tableBody.appendChild(row);
+                userCount++;
+            });
+
+                if (userCountElement) {
+                    userCountElement.textContent = userCount;
+                }
+
+                if (dateselectElement) {
+                    dateselectElement.textContent = `ล่าสุด: ${latestDateselect}`;
+                }
+
+                // Attach event listeners for edit and delete buttons
+                attachEventListeners();
+            });
+        }
+
+        function attachEventListeners() {
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const userId = event.target.getAttribute('data-id');
+                    // Add your edit logic here
+                    console.log(`Edit user with ID: ${userId}`);
+                });
+            });
+
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const userId = event.target.getAttribute('data-id');
+                    // Add your delete logic here
+                    console.log(`Delete user with ID: ${userId}`);
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                dateClick: function(info) {
+                    loadUserData(info.dateStr);
+                }
+            });
+
+            function fetchAndDisplayEvents() {
+                const usersRef = firebase.database().ref('Users');
+
+                usersRef.on('value', function(snapshot) {
+                    var events = [];
+                    snapshot.forEach(function(childSnapshot) {
+                        var childData = childSnapshot.val();
+                        if (childData.dateselect) {
+                            var startDate = new Date(childData.dateselect);
+                            if (!isNaN(startDate.getTime())) {
+                                var eventColor = childData.status === 'Confirmed' ? 'green' : 'red';
+                                events.push({
+                                    title: childData.name || 'Event',
+                                    start: startDate.toISOString().split('T')[0],
+                                    color: eventColor,
+                                    extendedProps: {
+                                        description: childData.description || 'No description',
+                                        details: childData // Store all details
+                                    }
+                                });
+                            } else {
+                                console.error("Invalid date: ", childData.dateselect);
+                            }
+                        }
+                    });
+
+                    calendar.removeAllEvents();
+                    calendar.addEventSource(events);
+                    calendar.render();
+                });
+            }
+
+            fetchAndDisplayEvents();
+            calendar.render();
+        });
+
+
+        async function logOut() {
+            try {
+                await auth.signOut();
+                console.log("User logged out");
+                document.getElementById('authStatus').innerText = 'No user logged in';
+            } catch (error) {
+                console.error("Error logging out:", error);
+                throw error;
+            }
+        }
+
+        const auth = firebase.auth();
+                // ตรวจสอบสถานะการล็อกอินของผู้ใช้เมื่อโหลดหน้า
+                auth.onAuthStateChanged((user) => {
+                    if (!user) {
+                        window.location.href = '/admin/index.html';
+                    } else {
+                        document.getElementById('authStatus').innerText = `Logged in as: ${user.email}`;
+                    }
+                });
+
+                document.getElementById('logoutButton').addEventListener('click', async () => {
+                    try {
+                        await auth.signOut();
+                        window.location.href = '/admin/index.html';
+                    } catch (err) {
+                        console.error("Error logging out:", err);
+                    }
+        });
+    </script>
+</body>
+</html>

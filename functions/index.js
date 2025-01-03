@@ -8,6 +8,7 @@ const firestore = require("./utils/firestore");
 const { WebhookClient } = require("dialogflow-fulfillment");
 const NodeCache = require("node-cache");
 const myCache = new NodeCache();
+const axios = require("axios");
 
 const CACHE_IMAGE = "image_";
 const CACHE_CHAT = "chat_";
@@ -19,6 +20,7 @@ exports.webhook = onRequest(async (req, res) => {
     for (const event of events) {
       var userId = event.source.userId;
       var replyToken = event.replyToken;
+      await loading(userId);
       var userData = await firestore.getUser(userId);
 
       var userMode = "bot";
@@ -42,6 +44,7 @@ exports.webhook = onRequest(async (req, res) => {
               await line.reply(event.replyToken,[{type : "text" , text:text}])
               break
             }
+            
 
             
 
@@ -160,7 +163,6 @@ exports.webhook = onRequest(async (req, res) => {
               return res.end();
             } else if (userMode == "gemini") {
               let question = event.message.text;
-
               const msg = await gemini.chat(question);
               console.log(msg);
               if (msg.includes("ขออภัยครับ ไม่พบข้อมูลดังกล่าว")) {
@@ -306,3 +308,23 @@ exports.dialogflowFulfillment = onRequest(async (req, res) => {
   }
   return res.send(req.method);
 });
+
+
+
+function loading(userId) {
+  return axios({
+    method: "post",
+    url: "https://api.line.me/v2/bot/chat/loading/start",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.CHANNEL_ACCESS_TOKEN}`
+    },
+    data: { chatId: userId }
+  })
+  .then(response => {
+    console.log("Loading started:", response.data);
+  })
+  .catch(error => {
+    console.error("Error starting loading:", error.response ? error.response.data : error.message);
+  });
+}
